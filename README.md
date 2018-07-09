@@ -34,11 +34,13 @@ optlyClientManager.activate('exp_for_b');
 optlyClientManager.variation('exp_for_b');
 ```
 
-Example:
+---
+
+### Example:
 ```javascript
+optlyClientManager.user('cp_reid', {'tier': 'gold', 'flag': 'B'});
+optlyClientManager.track('add_to_cart');
 optlyClientManager.init().then(function() {
-  optlyClientManager.activate('exp_for_b');
-  optlyClientManager.user('cp_reid', {'tier': 'gold', 'flag': 'B'});
-  optlyClientManager.variation('exp_for_b');
+  // activate and variation can be used here
 });
 ```
