@@ -12,7 +12,7 @@ optlyClientManager.init()
 ```
 
 ### user
-Set the user's UUID and attributes
+Set the user's UUID and attributes. These values will automatically be used when calling all wrapper methods below.
 ```javascript
 optlyClientManager.user('cp_reid', {'tier': 'gold'});
 ```
