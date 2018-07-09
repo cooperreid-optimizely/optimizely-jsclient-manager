@@ -1,10 +1,12 @@
-var optlyTracker = function() {
+var optlyClientManager = function() {
 
-  var projectId = 0000000000,
-    scriptSrc   = 'https://www.your-site.com/static/js/lib/optimizely/optimizely.min-1.6.0.js',
-    evtQueue    = [],
-    optClient   = null,
-    datafile    = null;
+  var projectId  = 9000000000,
+    scriptSrc    = 'https://www.your-site.com/static/js/lib/optimizely/optimizely.min-1.6.0.js',
+    scriptLoaded = false,
+    evtQueue     = [],
+    optClient    = null,
+    globalAttr   = {},
+    datafile     = null;
 
   var getDatafile = function() {
     if(datafile) return Promise.resolve(datafile);
@@ -29,19 +31,38 @@ var optlyTracker = function() {
   }
 
   var loadFSScript = function() {
+    if(scriptLoaded) return Promise.resolve(true);
+
     return new Promise(function(resolve, reject) {
       var s;
       s = document.createElement('script');
       s.src = scriptSrc;
-      s.onload = resolve;
+      s.onload = function() {
+        scriptLoaded = true;
+        resolve(true);
+      };
       s.onerror = reject;
       document.head.appendChild(s);
     });
   }
 
-  var track = function(eventKey, uuid, userAttr, eventTags) {
-    if (optClient) optClient.track(eventKey, uuid, userAttr, eventTags);
-    else evtQueue.push([eventKey, uuid, userAttr, eventTags]);
+  var coalesceUserAttr = function(additionalUserAttr) {
+    return Object.assign(globalAttr, additionalUserAttr || {})
+  }
+
+  var activate = function(experimentKey, overrideUUID, additionalUserAttr) {
+    if(!optClient) throw Error('Active must be called after client has been instantiated. Call `init` and then call `activate` within the success handler.');
+    optClient.activate(experimentKey, overrideUUID || globalUUID, coalesceUserAttr(additionalUserAttr));
+  }
+
+  var getVariation = function(experimentKey, overrideUUID, additionalUserAttr) {
+    if(!optClient) throw Error('Active must be called after client has been instantiated. Call `init` and then call `activate` within the success handler.');
+    optClient.getVariation(experimentKey, overrideUUID || globalUUID, coalesceUserAttr(additionalUserAttr));
+  }  
+
+  var track = function(eventKey, overrideUUID, additionalUserAttr, eventTags) {
+    if (optClient) optClient.track(eventKey, overrideUUID || globalUUID, coalesceUserAttr(additionalUserAttr), eventTags);
+    else evtQueue.push([eventKey, overrideUUID || globalUUID, coalesceUserAttr(additionalUserAttr), eventTags]);
   }
 
   var dispatchEnqueued = function() {
@@ -74,8 +95,16 @@ var optlyTracker = function() {
   return {
     init: init,
     track: track,
-    getClient: getClient,
-    getDatafile: getDatafile
+    activate: activate,
+    variation: getVariation,
+    user: function(defaultUUID, defaultUserAttr) {
+      globalAttr = defaultUserAttr;
+      globalUUID = defaultUUID;
+    },
+    util: {
+      getClient: getClient,
+      getDatafile: getDatafile
+    }
   };
 
 }();
