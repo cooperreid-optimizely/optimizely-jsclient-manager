@@ -14,7 +14,7 @@ optlyClientManager.init()
 ### user
 Set the user's UUID and attributes. These values will automatically be sent to Optimizely when calling all wrapper methods.
 ```javascript
-optlyClientManager.user('cp_reid', {'tier': 'gold'});
+optlyClientManager.user('userId', {'tier': 'gold'});
 ```
 
 ## Wrapper Methods
@@ -38,7 +38,7 @@ optlyClientManager.variation('exp_for_b');
 
 ### Example:
 ```javascript
-optlyClientManager.user('cp_reid', {'tier': 'gold', 'flag': 'B'});
+optlyClientManager.user('userId', {'tier': 'gold', 'flag': 'B'});
 optlyClientManager.track('add_to_cart');
 optlyClientManager.init().then(function() {
   // activate and variation can be used here
