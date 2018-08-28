@@ -6,7 +6,7 @@ A solution for using Optimizely's Fullstack JavaScript SDK in the browser which 
 ## Enhancements
 
 ### init
-Loads the SDK script and the datafile, returns a Promise
+Loads the SDK script and the datafile, returns a Promise. Also dispatches any tracking calls that where called pre-init.
 ```javascript
 optlyClientManager.init()
 ```
