@@ -1,5 +1,5 @@
 # Optimizely JSClient Manager
-A solution for using Optimizely's Fullstack JavaScript SDK in the browser which handles SDK script & datafile fetching. The `optlyClientManager` provides wrapper functions for all of the Optimizely SDK's core methods.
+A proof-of-concept solution for using Optimizely's Fullstack JavaScript SDK in the browser which handles SDK script & datafile fetching. The `optlyClientManager` provides wrapper functions for all of the Optimizely SDK's core methods.
 
 ---
 
