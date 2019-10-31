@@ -28,7 +28,7 @@ optlyClientManager.track('add_to_cart');
 ```
 
 ### activate & variation
-Wrapper functions for Optimizely SDK methods `activate` and `getVariation`. The `activate` and `variation` method _must_ be called after `optlyClientManager` has initallized
+Wrapper functions for Optimizely SDK methods `activate` and `getVariation`. The `activate` and `variation` method _must_ be called after `optlyClientManager` has initallized.
 ```javascript
 optlyClientManager.activate('exp_for_b');
 optlyClientManager.variation('exp_for_b');
